@@ -1,0 +1,497 @@
+#include<iostream>
+#include<cstring>
+#include<cstdlib>
+using namespace std;
+class str
+{
+	char *p;
+
+	//////////////////////////////////////////////////////
+
+	public:
+	str()
+	{
+		p=new char[100];
+	}
+
+	//////////////////////////////////////////////////////
+
+	str(const char *s)
+	{
+		p=new char[strlen(s)+1];	
+		strcpy(p,s);
+	}
+
+	////////////////////////////////////////////////////////
+
+	str( str &s)
+	{
+		p=new char[strlen(s.p)+1];
+		strcpy(p,s.p);
+	}
+
+	/////////////////////////////////////////////////////////
+
+	~str()
+	{
+		delete []p;
+	}
+	////////////////////assignment/////////////////////////////////// 
+	str &operator=(const str &s)
+	{
+		delete[] p;
+		p=new char [strlen(s.p)+1];
+		strcpy(p,s.p);
+		return *this;
+	}
+	////////////////////////[] operator//////////////////////////////
+	char &operator[] (int i)
+	{
+		return p[i];
+	}
+	/////////////////////////+ operator//////////////////////////
+	str operator+(const str &s)
+	{
+		str temp;
+		delete[] temp.p;
+		temp.p=new char[strlen(p)+strlen(s.p)+1];
+		strcpy(temp.p,p);
+		strcat(temp.p,s.p);
+		return temp;
+	}
+	//////////////////////////////> >= < <= == !=////////////////////////
+	bool operator>(const str &s)
+	{
+		return strcmp(p,s.p)>0;
+	}
+
+	bool operator<(const str &s)
+	{
+		return strcmp(p,s.p)<0;}
+	bool operator >=(const str &s)
+	{
+		return strcmp(p,s.p)>=0;
+	}
+	bool operator<=(const str &s)
+	{
+		return strcmp(p,s.p)<=0;
+	}
+
+	bool operator==(const str &s)
+	{
+		return strcmp(p,s.p)==0;
+	}
+	bool operator!=(const str &s)
+	{
+		return strcmp(p,s.p)!=0;
+	}
+
+	//////////////////////////////////////////////////////////
+
+	friend istream& operator >> (istream& in ,str& s);
+	friend ostream& operator << (ostream& out ,str& s);
+	friend void len(str &s);
+	friend void rev(str &s);
+	friend void sub(str &s);
+	friend void upper(str &s);
+	friend void lower(str &s);
+	friend void my_strchr(str &s ,char q);
+	friend void my_strrchr(str &s,char q);
+	friend void my_strcpy(str &s,str &r);
+	friend void my_strcmp(str &s,str &r);
+	friend void my_strcat(str &s,str &r);
+	friend void my_strncmp(str &s,str &r,int c);
+	friend void my_strncpy(str &s,str &r,int c);
+	friend void my_strncat(str &s,str &r,int c);
+
+
+};
+
+//////////////////////////////////////////////////////////////////
+
+istream& operator >>(istream& in,str& s)
+{
+	char t[500];
+	in>>t;
+	delete[] s.p;
+	s.p=new char[strlen(t)+1];
+	strcpy(s.p,t);
+	return in;
+}
+
+//////////////////////////////////////////////////////////////////
+
+ostream& operator <<(ostream& out,str& s)
+{
+	out<<s.p<<endl;;
+	return out;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void len(str &s)
+{
+	int i,c=0;
+	for(i=0;s[i]!='\0';i++)
+		c++;
+	cout<<"length is: "<<c<<endl;
+	cout<<" "<<endl;
+} 
+
+///////////////////////////////////////////////////////////////////////
+
+void rev(str &s)
+{
+	char t;
+	int i,j,len=0;
+	for(len=0;s[len]!='\0';len++);
+	for(i=0,j=len-1;i<j;i++,j--)
+	{
+		t=s[i];
+		s[i]=s[j];
+		s[j]=t;
+	}
+	cout<<"rev:"<<s<<endl;
+	cout<< "  "<<endl;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void sub(str &s)
+{
+	char m[500];
+	cout<<"enter sub:"<<endl;
+	cin>>m;
+	cout<<" "<<endl;
+	int i,j,k,c=0;
+	for(i=0;s[i]!='\0';i++)
+	{
+		for(j=0;m[j]!='\0';j++)
+		{
+			if(s[i+j]!=m[j])
+				break;
+		}
+		if(m[j]=='\0')
+			c++;
+	}
+	if(c>0)
+		cout<<"substring found"<<endl;
+	else
+		cout<<"substring not found"<<endl;
+	cout<<"  "<<endl;
+}
+
+///////////////////////////////////////////////////////////////////////
+
+void upper(str &s)
+{
+	int i;
+	for(i=0;s[i]!='\0';i++)
+	{
+		if(s[i]>='a'&&s[i]<='z')
+			s[i]=s[i]-32;
+	}
+	cout<<"uppercase is:"<<s<<endl;
+	cout<< "  "<<endl;
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+void lower(str &s)
+{
+	int i;
+	for(i=0;s[i]!='\0';i++)
+	{
+		if(s[i]>='A'&&s[i]<='Z')
+			s[i]=s[i]+32;
+	}
+	cout<<"lowercase is:"<<s<<endl;
+	cout<< "  "<<endl;
+}
+
+////////////////////////////////////////////////////////////////////
+
+void my_strchr(str &s,char a)
+{
+	int i;
+	cout<<"enter the character"<<endl;
+	cin>>a;
+	cout<<" "<<endl;
+	for(i=0;s[i]!='\0';i++)
+	{
+		if(s[i]==a)
+		{
+			cout<<"char found position at "<<i<<endl;
+			cout<< "  "<<endl;
+			return;
+		}
+	}
+	cout<<"char not found"<<endl;
+	cout<< "  "<<endl;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+void my_strrchr(str &s,char a)
+{
+	int i;
+	cout<<"enter the character"<<endl;
+	cin>>a;
+	cout<<  " "<<endl;
+	for(i=0;s[i];i++);
+	for(i;i>=0;i--)
+	{
+		if(s[i]==a)
+		{
+			cout<<"char found position at "<<i<<endl;
+			cout<< "  "<<endl;
+			return;
+		}
+	}
+	cout<<"char not found"<<endl;
+	cout<< "  "<<endl;
+}
+///////////////////////////////////////////////////////////////////////////////
+
+void my_strcpy(str &s,str &r)
+{
+	int i;
+	for(i=0;s[i]!=0;i++)
+		r[i]=s[i];
+	r[i]='\0';
+	cout<<"given string is: "<<s<<endl;
+	cout<<"copied string is: "<<r<<endl;
+	cout<< "  "<<endl;
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void my_strncpy(str &s,str &r,int c)
+{
+	cout<<"enter c"<<endl;
+	cin>>c;
+	int i;
+	for(i=0;i<c;i++)
+		r[i]=s[i];
+	r[i]='\0';
+	cout<<"given string is: "<<s<<endl;
+	cout<<"copied string is: "<<r<<endl;
+	cout<<" "<<endl;
+} 
+///////////////////////////////////////////////////////////////////// 
+
+void my_strcmp(str &s ,str &r)
+{
+	int i;
+	for(i=0;s[i]!='\0'&&r[i]!='\0';i++)
+	{
+		if(s[i]!=r[i])
+			break;
+	}
+	if(s[i]=='\0'&&r[i]=='\0')
+		cout<<"strings are equal"<<endl;
+	else
+		cout<<"strings are unequal"<<endl;
+	cout<<" "<<endl;
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void my_strncmp(str &s,str &r,int c)
+{
+	cout<<"enter c"<<endl;
+	cin>>c;
+	cout<<" "<<endl;
+	int i;
+	for(i=0;i<c&&s[i]!='\0'&&r[i]!='\0';i++)
+	{
+		if(s[i]!=r[i])
+			break;
+	}
+	if(i==c||(s[i]=='\0'&&r[i]=='\0'))
+		cout<<"strings are equal"<<endl;
+	else
+		cout<<"strings are unequal"<<endl;
+	cout<<"  "<<endl;
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void my_strcat(str &s, str &r)
+{
+	int i, j;
+	for(i = 0; s[i] != '\0'; i++);
+	for(j = 0; r[j] != '\0'; j++)
+		s[i++] = r[j];
+	s[i] = '\0';
+	cout << "after concatenate: " << s << endl;
+}
+
+////////////////////////////////////////////////////////////////////
+
+void my_strncat(str &s,str &r,int c)
+{
+	cout<<"enter the c: "<<endl;
+	cin>>c;
+	int i,j;
+	for(i = 0; s[i] != '\0'; i++);
+	for(j = 0; j < c && r[j] != '\0'; j++)
+		s[i++] = r[j];
+	s[i] = '\0';
+	cout<<"after cancatenate:"<<s<<endl;
+	cout<< "  "<<endl;
+}
+
+//////////////////////////////////////////////////////////////////////
+
+int main()
+{
+	str s1,s2;
+	char ch;
+	int c,op;
+	cout<<"enter the frist string"<<endl;
+	cin>>s1;
+	cout<<"enter second string"<<endl;
+	cin>>s2;
+	cout<<"  "<<endl;
+	str s3(s1);
+	cout<<"frist : "<<s1<<endl;
+	cout<<"second : "<<s2<<endl;
+	cout<<"copied : "<<s3<<endl;cout<<"  "<<endl;
+	while(1)
+	{
+		cout<<"enter the option\n1.friend funcs\n2.mem funcs\n3.exit\n"<<endl;
+		cin>>op;
+		switch(op)
+		{
+			case 1:
+				{
+					bool back=false;
+					while(!back)
+					{
+						cout<<"friend func is with these catergories"<<endl;
+						cout<<"1.  length of string"<<endl;
+						cout<<"2.  reverse of string"<<endl;
+						cout<<"3.  substring of a string"<<endl;
+						cout<<"4.  uppercase"<<endl;
+						cout<<"5.  lowercase"<<endl;
+						cout<<"6.  char founding strchr"<<endl;
+						cout<<"7.  char founding strrchr"<<endl;
+						cout<<"8.  cpying using strcmp"<<endl;
+						cout<<"9.  string cmp strncmp"<<endl;
+						cout<<"10. string cancatenate strcat"<<endl;
+						cout<<"11. string copy using strcpy"<<endl;
+						cout<<"12. string cmp using strncpy"<<endl;
+						cout<<"13. string cancatenate using strncat"<<endl;
+						cout<<"14. exit"<<endl;
+						cout<< "  "<<endl;
+						int m;
+						cout<<"enter your choice"<<endl;
+						cin>>m;
+						cout<< "  "<<endl;
+						switch(m)
+						{
+							case 1:  len(s1);break;
+							case 2:  rev(s1);break;
+							case 3:  sub(s1);break;
+							case 4:  upper(s1);break;
+							case 5:  lower(s1);break;
+							case 6:  my_strchr(s1,ch);break;
+							case 7:  my_strrchr(s1,ch);break;
+							case 8:  my_strcmp(s1,s2);break;
+							case 9:  my_strncmp(s1,s2,c);break;
+							case 10: my_strcat(s1,s2);break; 
+							case 11: my_strcpy(s1,s2);break;
+							case 12: my_strncpy(s1,s2,c);break;
+							case 13: my_strncat(s1,s2,c);break;
+							case 14: cout<<"exiting the block"<<endl;
+								 back=true;cout<<"  "<<endl;break;
+							default: cout<<"unknown choice"<<endl;cout<< "  "<<endl;break;
+						}
+					}
+					break;
+				}
+				////////////////////////////////////////////////////////////////////////
+
+			case 2:
+				{
+					bool back=false;
+					while(!back)
+					{
+						cout<<"member function is with these catergories"<<endl;
+						cout<<"1.asingnment string"<<endl;
+						cout<<"2.add string"<<endl;
+						cout<<"3.[] string"<<endl;
+						cout<<"4.>  string"<<endl;
+						cout<<"5.<  string"<<endl;
+						cout<<"6.>=  string"<<endl;
+						cout<<"7.<=  string"<<endl;
+						cout<<"8.== string"<<endl;
+						cout<<"9.!= string"<<endl;
+						cout<<"10.exit"<<endl;cout<< "  " <<endl;
+						int n;
+						cout<<"enter your choice "<<endl;
+						cin>>n;
+						cout<< " "<<endl;
+						switch(n)
+						{
+							case 1:s1=s2;
+							       cout<<"s1: "<<s1<<"s2: "<<s2<<endl;break;
+							case 2:s1=s1+s2;
+							       cout<<"s1: "<<s1<<endl;
+							       cout<<" "<<endl;
+							case 3:
+							       for(int i=0;i<10;i++)
+								       cout<<s1[i]<<" ";		
+							       break;		
+							case 4:if(s1>s2)
+								       cout<<"true s1 is greater" <<endl;
+							       else
+								       cout<<"fase s1 is not greater"<<endl;
+							       break;	
+							case 5:if(s1<s2)
+								       cout<<"true s1 is lesser" <<endl;
+							       else
+								       cout<<"false s1 is not lesser"<<endl;	
+							       break;	
+							case 6:if(s1>=s2)
+								       cout<<"true s1 is either greater or equal"<<endl;
+							       else
+								       cout<<"false s1 is not greater or equal"<<endl;	
+							       break;	
+							case 7:if(s1<=s2)
+								       cout<<" true s1 is either lesser or equal " <<endl;
+							       else
+								       cout<<"false s1 is not either lesser or equal"<<endl;	
+							       break;	
+							case 8:if(s1==s2)
+								       cout<<"true s1 ,s2 is equal" <<endl;
+							       else
+								       cout<<"false s1, s2 are uneuql"<<endl;	
+							       break;	
+							case 9:if(s1!=s2)
+								       cout<<"true s1,s2 are not equal" <<endl;
+							       else
+								       cout<<"false s1,s2 are equal"<<endl;
+							       break;	
+
+							case 10: cout<<"exiting the block"<<endl;
+								 back=true;
+								 cout<<"  "<<endl;break;
+							default: cout<<"unknown choice"<<endl;
+								 cout<< "  "<<endl;break;	
+						}
+					}
+
+					break;
+				}
+				/////////////////////////////////////////////////////////////////////////////
+
+			case 3 :cout<<"exiting the block"<<endl;
+				cout<<" "<<endl;
+				exit(0);break;
+			default:cout<<"unknown choice"<<endl;
+				cout<<" "<<endl;break;
+		}
+	}
+}
